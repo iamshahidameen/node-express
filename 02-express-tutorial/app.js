@@ -1,11 +1,15 @@
 const http = require('http');
 
+const { readFileSync } = require('fs');
+
+const homepage = readFileSync('./homepage.html');
+
 const server = http.createServer((req, res) => {
   const url = req.url;
 
   if (url === '/') {
     res.writeHead(200, { 'content-type': 'text/html' });
-    res.write('<h1>Welcome to my Homepage</h1>');
+    res.write(homepage);
   } else if (url === '/contact') {
     res.writeHead(200, { 'content-type': 'text/html' });
     res.write('<h1>Welcome to my Contact Page</h1>');
