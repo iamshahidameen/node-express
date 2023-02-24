@@ -1,38 +1,24 @@
-const http = require('http');
+const express = require('express');
 
-const { readFileSync } = require('fs');
+const app = express();
 
-const homepageContent = readFileSync('./navbar-app/index.html');
-const homepageStyles = readFileSync('./navbar-app/styles.css');
-const homepageLogo = readFileSync('./navbar-app/logo.svg');
-const homepageJs = readFileSync('./navbar-app/browser-app.js');
-
-const server = http.createServer((req, res) => {
-  const url = req.url;
-
-  if (url === '/') {
-    res.writeHead(200, { 'content-type': 'text/html' });
-    res.write(homepageContent);
-  } else if (url === '/styles.css') {
-    res.writeHead(200, { 'content-type': 'text/css' });
-    res.write(homepageStyles);
-  } else if (url === '/logo.svg') {
-    res.writeHead(200, { 'content-type': 'image/svg+xml' });
-    res.write(homepageLogo);
-  } else if (url === '/browser-app.js') {
-    res.writeHead(200, { 'content-type': 'text/javascript' });
-    res.write(homepageJs);
-  } else if (url === '/contact') {
-    res.writeHead(200, { 'content-type': 'text/html' });
-    res.write('<h1>Welcome to my Contact Page</h1>');
-  } else if (url === '/about') {
-    res.writeHead(200, { 'content-type': 'text/html' });
-    res.write('<h1>Welcome to my About Page</h1>');
-  } else {
-    res.writeHead(404, { 'content-type': 'text/html' });
-    res.write('<h1>Page not found</h1>');
-  }
-  res.end();
+app.get('/', (req, res) => {
+  console.log('Resource Requested on Homepage');
+  res.send('<h1>This is my Homepage</h1>');
+});
+app.get('/contact', (req, res) => {
+  console.log('Resource Requested on Contact Page');
+  res.send('<h1>This is my Contact Page</h1>');
+});
+app.get('/about', (req, res) => {
+  console.log('Resource Requested on About Page');
+  res.send('<h1>This is my About Page</h1>');
 });
 
-server.listen(5000);
+app.all('*', (req, res) => {
+  res.status(404).send('<h1>Resource not found</h1>');
+});
+
+app.listen(5000, () => {
+  console.log('Server is listening on port 5000...');
+});
