@@ -1,22 +1,18 @@
 const express = require('express');
 
+const path = require('path');
+
 const app = express();
 
+app.use(express.static('./public'));
+
 app.get('/', (req, res) => {
-  console.log('Resource Requested on Homepage');
-  res.send('<h1>This is my Homepage</h1>');
-});
-app.get('/contact', (req, res) => {
-  console.log('Resource Requested on Contact Page');
-  res.send('<h1>This is my Contact Page</h1>');
-});
-app.get('/about', (req, res) => {
-  console.log('Resource Requested on About Page');
-  res.send('<h1>This is my About Page</h1>');
+  res.sendFile(path.resolve(__dirname, './navbar-app/index.html'));
 });
 
 app.all('*', (req, res) => {
-  res.status(404).send('<h1>Resource not found</h1>');
+  console.log(path);
+  res.status(404).send('<h1>Resource Not Found</h1>');
 });
 
 app.listen(5000, () => {
