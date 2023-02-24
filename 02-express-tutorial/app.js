@@ -6,9 +6,10 @@ const app = express();
 
 app.use(express.static('./public'));
 
-app.get('/', (req, res) => {
+// Adding below index.html into static resources folder(public). The app still runs because the index.html browser will pick automatically
+/*app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, './navbar-app/index.html'));
-});
+});*/
 
 app.all('*', (req, res) => {
   console.log(path);
