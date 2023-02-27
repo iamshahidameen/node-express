@@ -1,19 +1,27 @@
 const express = require('express');
 
-const { products } = require('./data');
-
 const app = express();
 
+const { products } = require('./data');
+
 app.get('/', (req, res) => {
-  res.send('<h1>Home Page :) </h1> <a href="/api/products">products</a>');
+  res.send('<h1>Home Page</h1> <a href="/api/products">Go to Products</a>');
 });
 app.get('/api/products', (req, res) => {
-  const newProducts = products.map((prod) => {
-    const { id, name, image } = prod;
-    return { id, name, image };
+  res.setHeader('content-type', 'text/html');
+  const prodListing = products.map((prod) => {
+    const { id } = prod;
+    return { id };
   });
-  res.json(newProducts);
+
+  res.send(
+    prodListing.map((prod) => {
+      const { id } = prod;
+      return `<a href="${id}">${id}</a>`;
+    })
+  );
 });
+
 app.listen(5000, () => {
-  console.log('Server is listening on port 5000...');
+  console.log('App listening on port 5000...');
 });
