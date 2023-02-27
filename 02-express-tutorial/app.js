@@ -8,17 +8,22 @@ app.get('/', (req, res) => {
   res.send('<h1>Home Page</h1> <a href="/api/products">Go to Products</a>');
 });
 app.get('/api/products', (req, res) => {
-  res.setHeader('content-type', 'text/html');
   const prodListing = products.map((prod) => {
-    const { id } = prod;
-    return { id };
+    const { id, name } = prod;
+    return { id, name };
   });
 
+  res.send(prodListing);
+});
+
+app.get('/api/products/:productID', (req, res) => {
+  const { productID } = req.params;
+  console.log(productID);
+  const singleProduct = products.find((prod) => {
+    return prod.id === Number(productID);
+  });
   res.send(
-    prodListing.map((prod) => {
-      const { id } = prod;
-      return `<a href="${id}">${id}</a>`;
-    })
+    `<h1>${singleProduct.name}</h1> <img src="${singleProduct.image}" />`
   );
 });
 
