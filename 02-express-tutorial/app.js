@@ -8,6 +8,7 @@ const logger = (req, res, next) => {
   const path = req.path;
   const date = new Date().getFullYear();
   console.log(method, url, path, date);
+  next();
 };
 
 app.get('/', logger, (req, res) => {
