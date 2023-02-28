@@ -30,7 +30,10 @@ app.get('/api/products/:productID', (req, res) => {
     `<h1>${singleProduct.name}</h1> <img src="${singleProduct.image}" />`
   );
 });
-
+app.get('/api/products/:productID/reviews/:reviewID', (req, res) => {
+  console.log(req.params);
+  res.send('Hello World');
+});
 app.listen(5000, () => {
   console.log('App listening on port 5000...');
 });
