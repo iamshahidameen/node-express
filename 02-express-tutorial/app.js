@@ -8,6 +8,9 @@ let { people } = require('./data');
 app.use(express.static('./methods-public'));
 //parse form data
 
+//parse form data from JS fetch
+app.use(express.json());
+
 //Parse HTML Form Data
 app.use(express.urlencoded({ extended: false }));
 app.get('/api/people', (req, res) => {
