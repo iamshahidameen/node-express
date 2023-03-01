@@ -1,13 +1,24 @@
 const express = require('express');
 
 const app = express();
+const morgan = require('morgan');
 const logger = require('./logger');
 
 const authorize = require('./authorize');
 
-app.use('/', [authorize, logger], (req, res) => {
-  res.send('Home');
-});
+app.use(
+  morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, 'content-length'),
+      '-',
+      tokens['response-time'](req, res),
+      'ms',
+    ].join(' ');
+  })
+);
 app.get('/', (req, res) => {
   res.send('Home Page');
 });
