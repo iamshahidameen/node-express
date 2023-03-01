@@ -1,38 +1,21 @@
 const express = require('express');
 
 const app = express();
-const morgan = require('morgan');
-const logger = require('./logger');
 
-const authorize = require('./authorize');
+let { people } = require('./data');
 
-app.use(
-  morgan(function (tokens, req, res) {
-    return [
-      tokens.method(req, res),
-      tokens.url(req, res),
-      tokens.status(req, res),
-      tokens.res(req, res, 'content-length'),
-      '-',
-      tokens['response-time'](req, res),
-      'ms',
-    ].join(' ');
-  })
-);
-app.get('/', (req, res) => {
-  res.send('Home Page');
-});
-app.get('/about', (req, res) => {
-  res.send(' About Page');
-});
-app.get('/url', (req, res) => {
-  res.send('URL Page');
-});
-app.get('/contact', (req, res) => {
-  res.send('Contact Page');
-});
-app.get('/api/products', (req, res) => {
-  res.send('Products Listing Page');
+//Static Assets/Homepage
+app.use(express.static('./methods-public'));
+//parse form data
+app.use(express.urlencoded({ extended: false }));
+app.post('/loginPage', (req, res) => {
+  console.log(req.body);
+  const { name } = req.body;
+  if (name) {
+    return res.status(200).send(`Welcome ${name}`);
+  } else {
+    return res.status(401).send('Please provide credentials');
+  }
 });
 
 app.listen(5000, () => {
