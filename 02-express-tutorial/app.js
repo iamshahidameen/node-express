@@ -3,7 +3,9 @@ const express = require('express');
 const app = express();
 const logger = require('./logger');
 
-app.use('/', logger, (req, res) => {
+const authorize = require('./authorize');
+
+app.use('/', [authorize, logger], (req, res) => {
   res.send('Home');
 });
 app.get('/', (req, res) => {
