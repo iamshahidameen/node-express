@@ -25,17 +25,44 @@ app.post('/api/people', (req, res) => {
       .status(401)
       .json({ success: false, msg: 'Please provide name value' });
   } else {
-    res.status(201).json({ success: true, person: name });
+    return res.status(201).json({ success: true, person: name });
+    //for Postman
+    // res.status(201).json({ success: true, data: [...people, name] });
   }
 });
 app.post('/loginPage', (req, res) => {
   console.log(req.body);
   const { name } = req.body;
   if (name) {
-    return res.status(200).send(`Welcome ${name}`);
+    return res.status(200).json(`Welcome ${name}`);
   } else {
-    return res.status(401).send('Please provide credentials');
+    return res.status(401).json('Please provide credentials');
   }
+});
+
+app.put('/api/people/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const { name } = req.body;
+
+  const person = people.find((person) => person.id === Number(id));
+
+  if (!person) {
+    return res
+      .status(404)
+      .json({ success: false, msg: `No person with id ${id}` });
+  }
+
+  const newPeopele = people.map((person) => {
+    if (person.id === Number(id)) {
+      person.name = name;
+    }
+    return person;
+  });
+
+  console.log(id, name);
+
+  res.status(200).json({ success: true, data: newPeopele });
 });
 
 app.listen(5000, () => {

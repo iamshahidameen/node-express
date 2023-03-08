@@ -40,14 +40,14 @@ app.post('/loginPage', (req, res) => {
   }
 });
 
-app.get('/api/people/:id', (req, res) => {
+app.put('/api/people/:id', (req, res) => {
   const { id } = req.params;
   console.log(id);
   const { name } = req.body;
 
   const person = people.find((person) => person.id === Number(id));
 
-  console.log(person);
+  console.log(id, name);
 
   res.send('PUT');
 });
