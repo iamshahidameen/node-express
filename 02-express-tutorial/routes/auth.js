@@ -10,3 +10,5 @@ router.post('/', (req, res) => {
 
   res.status(401).send('Please Provide Credentials');
 });
+
+module.exports = router;
