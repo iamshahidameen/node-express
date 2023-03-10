@@ -40,21 +40,29 @@ app.post('/loginPage', (req, res) => {
   }
 });
 
-app.delete('/api/people/:id', (req, res) => {
-  console.log('first');
-  const person = people.find((person) => person.id === Number(req.params.id));
+app.put('/api/people/:id', (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const { name } = req.body;
+
+  const person = people.find((person) => person.id === Number(id));
 
   if (!person) {
     return res
       .status(404)
-      .json({ success: false, msg: `No person with id ${req.params.id}` });
+      .json({ success: false, msg: `No person with id ${id}` });
   }
 
-  const newPeople = people.filter((person) => {
-    return person.id !== Number(req.params.id);
+  const newPeople = people.map((person) => {
+    if (person.id === Number(id)) {
+      person.name = name;
+    }
+    return person;
   });
-  console.log('newPeople', newPeople);
-  return res.status(200).json({ success: true, data: newPeople });
+
+  console.log(id, name);
+
+  res.status(200).json({ success: true, data: newPeople });
 });
 
 app.listen(5000, () => {
